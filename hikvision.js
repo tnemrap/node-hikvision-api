@@ -176,6 +176,23 @@ hikvision.prototype.nightProfile = function () {
 	})
 }
 
+// Trigger IO Input
+hikvision.prototype.TriggerIOInput = function (trigger) {
+    	var self = this;
+	var body = 
+	request.put(
+		BASEURI + '/IO/inputs/1',
+		'<IOInputPort xmlns="http://www.hikvision.com/ver10/XMLSchema" version="1.0"><id>1</id><triggering>'+trigger+'</triggering></IOInputPort>',
+		function (error, response, body) {
+		if ((!error) && (response.statusCode === 200)) {
+		} else {
+			self.emit("error", 'FAILED TO CHANGE TRIGGER');
+			if (TRACE) 	console.log('FAILED TO CHANGE TRIGGER');
+		}	
+	})
+}
+
+
 // Handle alarms
 function handleData(self, data) {
 	parser.parseString(data, function(err, result) {
